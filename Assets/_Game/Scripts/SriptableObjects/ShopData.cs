@@ -4,9 +4,9 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "ShopData", menuName = "Scriptable Object/Shop Data")]
 public class ShopData : ScriptableObject {
-    public ShopItemsData<WeaponType> weaponsData;
-    public ShopItemsData<HatType> hatsData;
-    public ShopItemsData<PantsType> pantsData;
+    public ShopItemDataList<WeaponType> weaponsData;
+    public ShopItemDataList<HatType> hatsData;
+    public ShopItemDataList<PantsType> pantsData;
 
     public ShopItemData<WeaponType> GetWeaponsData(WeaponType weaponType) {
         for (int i = 0; i < weaponsData.itemsData.Count; i++) {

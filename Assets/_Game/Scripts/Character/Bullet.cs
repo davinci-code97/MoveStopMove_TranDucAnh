@@ -35,7 +35,7 @@ public class Bullet : GameUnit
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.CompareTag(Constants.TAG_CHARACTER) && collision.gameObject != owner.gameObject) {
             Character character = collision.gameObject.GetComponent<Character>();
-            character.OnHit(damage);
+            character.OnHit(this, damage);
 
             HBPool.Despawn(this);
         }
@@ -59,5 +59,6 @@ public class Bullet : GameUnit
         owner = character;
     }
 
+    public Character GetOwner() { return owner; }
 
 }

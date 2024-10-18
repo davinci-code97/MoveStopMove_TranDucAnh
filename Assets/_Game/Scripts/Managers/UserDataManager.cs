@@ -7,7 +7,7 @@ public class UserDataManager : MonoBehaviour
 {
     public static string KeySaveData = "KeySaveData";
 
-    public static UserDataManager Instance;
+    public static UserDataManager Instance { get; private set; }
 
     public ShopData shopData;
     public UserData userData;
@@ -71,7 +71,7 @@ public class UserData {
     public float gold;
 
     public UserData() {
-        level = 0;
+        level = 1;
         gold = 0;
         weaponData = new SaveItemWeaponData();
         itemHatData = new SaveItemHatData();

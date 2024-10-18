@@ -6,6 +6,12 @@ using UnityEngine;
 
 public class LevelConfig : ScriptableObject
 {
-    public int maxBots;
+    public int level;
+    public LevelPrefab levelPrefab;
+
+    public List<BotType> botTypeList;
+    public int botCount;
+    public int maxCurrentBotCount;
+    public float spawnRadius;
     public float countdownTime;
 }

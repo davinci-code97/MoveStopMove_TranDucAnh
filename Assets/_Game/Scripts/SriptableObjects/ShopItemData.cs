@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class ShopItemsData<T> where T : Enum {
+public class ShopItemDataList<T> where T : Enum {
     public List<ShopItemData<T>> itemsData;
 
 }

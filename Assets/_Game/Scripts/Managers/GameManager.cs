@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     public enum GameState { INTRO, MAIN_MENU, PLAYING, PAUSED, GAME_OVER }
     public GameState currentState { get; private set; }
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
         switch (currentState) {
             case GameState.INTRO:
+                //UIManager.Instance.LoadUI("Intro");
                 break;
             case GameState.MAIN_MENU:
                 break;

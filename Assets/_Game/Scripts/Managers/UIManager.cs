@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal static void ShowNoti(Character charater) {
+    internal void ShowNoti(Character charater) {
 
     }
 

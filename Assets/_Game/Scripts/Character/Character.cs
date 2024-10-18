@@ -7,7 +7,7 @@ public class Character : GameUnit
 {
     public event EventHandler<Character> OnCharacterDead;
 
-    [SerializeField] protected CharacterAttributeConfig characterConfig;
+    [SerializeField] protected CharacterConfig characterConfig;
     //[SerializeField] protected WeaponConfig weaponConfig;
 
     [SerializeField] protected Rigidbody rb;
@@ -39,6 +39,7 @@ public class Character : GameUnit
 
     private float attackSpeed = 1f;
     private float attackTimer = 0f;
+
     private float throwSpeed = .2f;
     private float throwTimer = 0f;
 
@@ -91,30 +92,30 @@ public class Character : GameUnit
         SetUpCurrentWeapon();
     }
 
-    public void OnHit(float damage) {
+    public void OnHit(Bullet bullet, float damage) {
         if (!IsDead) {
             hp -= damage;
 
             if (hp <= 0) {
                 hp = 0;
-                OnDeath();
+                OnDeath(bullet.GetOwner());
             }
         }
     }
 
-    protected virtual void OnDespawn() {
-        HBPool.Despawn(this);
-    }
-
-    protected virtual void OnDeath() {
+    protected virtual void OnDeath(Character character) {
         rb.velocity = Vector3.zero;
         IsDead = true;
+        SetBeingTargetedSprite(false);
         ChangeAnim(Constants.ANIM_DEAD);
-        DespawnAfterDelay(2f);
+        StartCoroutine(DespawnAfterDelay(2f));
         OnCharacterDead?.Invoke(this, this);
 
-        LevelManager.SetCharacterRemain(this);
-        UIManager.ShowNoti(this);
+        Character killer = character.GetComponent<Character>();
+        killer.IncreaseCharacterGoldValue(GetCharacterGoldValue());
+
+        LevelManager.Instance.SetCharacterRemain(this);
+        UIManager.Instance.ShowNoti(this);
     }
 
     private IEnumerator DespawnAfterDelay(float delay) {
@@ -122,12 +123,18 @@ public class Character : GameUnit
         OnDespawn();
     }
 
+    protected virtual void OnDespawn() {
+        HBPool.Despawn(this);
+    }
+
     protected virtual void SetUpCurrentWeapon() {
 
     }
     
-    protected virtual void Target_OnCharacterDead(object sender, Character e) {
-        RemoveFromRange(e);
+    protected virtual void Target_OnCharacterDead(object sender, Character target) {
+        RemoveFromRange(target);
+        LevelManager.Instance.RemoveFromCurrentBotsList(target);
+        LevelManager.Instance.SpawnBot();
     }
 
     private void RemoveFromRange(Character character) {
@@ -147,7 +154,7 @@ public class Character : GameUnit
         }
     }
 
-    public virtual void Move() {
+    public virtual void HandleMovement() {
         if (rb.velocity.Equals(Vector3.zero) && !isAttacking) {
             ChangeAnim(Constants.ANIM_IDLE);
         }
@@ -211,5 +218,12 @@ public class Character : GameUnit
 
     public void SetBeingTargetedSprite(bool isTargeted) => beingTargetedSprite.SetActive(isTargeted);
 
+    public float GetCharacterGoldValue() {
+        return gold;
+    }
+
+    public void IncreaseCharacterGoldValue(float value) {
+        this.gold += value;
+    }
 
 }

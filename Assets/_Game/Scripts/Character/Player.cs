@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class Player : Character
 {
@@ -18,10 +17,32 @@ public class Player : Character
     protected override void Update()
     {
         base.Update();
-        Move();
+        HandleMovement();
 
         if (rb.velocity.Equals(Vector3.zero) && nearestTarget != null) {
             Attack();
+        }
+    }
+
+    protected override void OnTriggerEnter(Collider other) {
+        base.OnTriggerEnter(other);
+        if (other.CompareTag(Constants.TAG_OBSTACLE)) {
+            Debug.Log("Obstacle in range");
+            MeshRenderer obstacleRenderer = other.GetComponentInChildren<MeshRenderer>();
+            Color color = obstacleRenderer.material.color;
+            color.a = 0.5f;
+            obstacleRenderer.material.color = color;
+        }
+    }
+
+    protected override void OnTriggerExit(Collider other) {
+        base.OnTriggerExit(other);
+        if (other.CompareTag(Constants.TAG_OBSTACLE)) {
+            Debug.Log("Obstacle out of range");
+            MeshRenderer obstacleRenderer = other.GetComponentInChildren<MeshRenderer>();
+            Color color = obstacleRenderer.material.color;
+            color.a = 1f;
+            obstacleRenderer.material.color = color;
         }
     }
 
@@ -41,9 +62,14 @@ public class Player : Character
         weapon.SetOwner(this);
     }
 
-    public override void Move() {
+    protected override void Target_OnCharacterDead(object sender, Character target) {
+        base.Target_OnCharacterDead(sender, target);
+        //UserDataManager.Instance.IncreasePlayerGold(target.GetCharacterGoldValue());
+    }
+
+    public override void HandleMovement() {
         if (joystick == null) return;
-        base.Move();
+        base.HandleMovement();
         direction = joystick.Direction;
         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.y * moveSpeed);
     }

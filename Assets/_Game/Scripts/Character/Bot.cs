@@ -45,6 +45,14 @@ public class Bot : Character
     }
 
     //public override void Attack() {
-        
+
     //}
+
+    protected override void Target_OnCharacterDead(object sender, Character target) {
+        base.Target_OnCharacterDead(sender, target);
+        //IncreaseBotGoldValue(target);
+    }
+
+    
+
 }

@@ -61,8 +61,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6321986719166952011, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      propertyPath: m_Color.a
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321986719166952011, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7086994974180073341, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      propertyPath: m_Color.a
+      value: 0.49803922
       objectReference: {fileID: 0}
     - target: {fileID: 7086994974180073341, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
       propertyPath: m_Enabled
@@ -119,9 +127,12 @@ MonoBehaviour:
   rb: {fileID: 4856727130651964146}
   animator: {fileID: 5167024562818363569}
   weapon: {fileID: 0}
+  hat: {fileID: 0}
+  pants: {fileID: 0}
   beingTargetedSprite: {fileID: 5794587091129049255}
   rightHand: {fileID: 4542832402724805288}
   shootPoint: {fileID: 7180231574722032925}
+  hp: 0
   charactersInRange: []
   joystick: {fileID: 8135886326569738823, guid: 56fae09712773584fb63896d473a98ee, type: 3}
 --- !u!4 &4542832402724805288 stripped
