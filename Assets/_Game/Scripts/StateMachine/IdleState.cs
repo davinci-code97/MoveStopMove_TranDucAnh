@@ -18,6 +18,10 @@ public class IdleState : IState
     public void OnExecute(Bot bot) {
         timer += Time.deltaTime;
 
+        if (bot.NearestTarget != null) {
+            bot.ChangeState(new AttackState());
+        }
+
         if (timer > randomTime) {
             bot.ChangeState(new PatrolState());
         }

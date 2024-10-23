@@ -12,8 +12,8 @@ public class Bullet : GameUnit
     private Character target;
     private Vector3 direction;
     private float damage;
-    private float rotateSpeed;
     private float bulletSpeed;
+    [SerializeField] private float rotateSpeed;
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class Bullet : GameUnit
 
     void Update()
     {
-        TF.Rotate(rotateSpeed * Time.deltaTime * Vector3.up, Space.Self);
+        TF.Rotate(rotateSpeed * Vector3.up, Space.Self);
         rb.velocity = direction * bulletSpeed;
     }
 

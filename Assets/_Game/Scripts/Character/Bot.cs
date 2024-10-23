@@ -7,6 +7,7 @@ public class Bot : Character
 {
     private IState currentState;
 
+    
 
     protected override void Start()
     {
@@ -40,13 +41,15 @@ public class Bot : Character
         }
     }
 
-    internal void StopMoving() {
+    public void StopMoving() {
         rb.velocity = Vector3.zero;
+        ChangeAnim(Constants.ANIM_IDLE);
     }
 
-    //public override void Attack() {
+    public override void Attack() {
+        base.Attack();
 
-    //}
+    }
 
     protected override void Target_OnCharacterDead(object sender, Character target) {
         base.Target_OnCharacterDead(sender, target);

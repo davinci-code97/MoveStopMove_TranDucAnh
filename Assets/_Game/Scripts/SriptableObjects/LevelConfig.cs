@@ -14,4 +14,5 @@ public class LevelConfig : ScriptableObject
     public int maxCurrentBotCount;
     public float spawnRadius;
     public float countdownTime;
+    public Vector3 playerStartPoint;
 }

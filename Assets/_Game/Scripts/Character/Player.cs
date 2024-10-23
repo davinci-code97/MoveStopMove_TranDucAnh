@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class Player : Character
 {
+    public static Player Instance { get; private set; }
+
     [SerializeField] private Joystick joystick;
 
     private Vector2 direction;
+
+    private int killCount = 0;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     protected override void Start()
     {
@@ -19,6 +27,10 @@ public class Player : Character
         base.Update();
         HandleMovement();
 
+        if (charactersInRange.Count > 0) {
+            FindNearestTarget();
+        }
+
         if (rb.velocity.Equals(Vector3.zero) && nearestTarget != null) {
             Attack();
         }
@@ -27,7 +39,7 @@ public class Player : Character
     protected override void OnTriggerEnter(Collider other) {
         base.OnTriggerEnter(other);
         if (other.CompareTag(Constants.TAG_OBSTACLE)) {
-            Debug.Log("Obstacle in range");
+            //Debug.Log("Obstacle in range");
             MeshRenderer obstacleRenderer = other.GetComponentInChildren<MeshRenderer>();
             Color color = obstacleRenderer.material.color;
             color.a = 0.5f;
@@ -56,14 +68,15 @@ public class Player : Character
         WeaponConfig weaponConfig = LevelManager.Instance.GetWeaponByWeaponType(weaponPoolType);
         //if (weaponConfig == null) { return; }
         //Debug.Log(weaponConfig.itemType);
-        weapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, Quaternion.Euler(0, -90, 0));
         Quaternion rotation = Quaternion.Euler(0, -90, 0);
+        weapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, rotation);
         weapon.SetWeaponParent(rightHand);
         weapon.SetOwner(this);
     }
 
     protected override void Target_OnCharacterDead(object sender, Character target) {
         base.Target_OnCharacterDead(sender, target);
+        killCount++;
         //UserDataManager.Instance.IncreasePlayerGold(target.GetCharacterGoldValue());
     }
 
@@ -73,6 +86,8 @@ public class Player : Character
         direction = joystick.Direction;
         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.y * moveSpeed);
     }
+
+
 
     //public override void Attack() { }
 

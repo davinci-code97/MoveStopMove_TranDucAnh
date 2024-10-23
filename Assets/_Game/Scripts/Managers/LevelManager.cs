@@ -20,9 +20,10 @@ public class LevelManager : MonoBehaviour
     public List<BotType> botTypeList;
     public int botsCount;
     private int maxCurrentBotCount;
-    private float spawnRadius;
+    public float spawnRadius;
 
     private float countdownTime;
+    private Vector3 playerStartPoint;
 
     private void Awake() {
         Instance = this;
@@ -46,11 +47,14 @@ public class LevelManager : MonoBehaviour
         maxCurrentBotCount = currentLevelConfig.maxCurrentBotCount;
         spawnRadius = currentLevelConfig.spawnRadius;
         countdownTime = currentLevelConfig.countdownTime;
+        playerStartPoint = currentLevelConfig.playerStartPoint;
 
         for (int i = 0; i < maxCurrentBotCount; i++) {
-            SpawnBot();
+            //SpawnBot();
         }
     }
+
+    
 
     public void SpawnBot() {
         if (currentBotsList.Count >= maxCurrentBotCount) return;
@@ -66,7 +70,7 @@ public class LevelManager : MonoBehaviour
         currentBotsList.Add(bot);
     }
 
-    Vector3 GetRandomNavMeshPosition(float radius) {
+    public Vector3 GetRandomNavMeshPosition(float radius) {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
         randomDirection += transform.position;
         NavMeshHit hit;
@@ -78,11 +82,11 @@ public class LevelManager : MonoBehaviour
         currentBotsList.Remove(bot);
     }
 
-    internal void SetCharacterRemain(Character character) {
+    public void SetCharacterRemain(Character character) {
         botsCount--;
     }
 
-    internal WeaponConfig GetWeaponByWeaponType(WeaponType weaponPoolType) {
+    public WeaponConfig GetWeaponByWeaponType(WeaponType weaponPoolType) {
         //Debug.Log((PoolType)weaponPoolType);    
         //Debug.Log(weaponPoolType);
         foreach (WeaponConfig weapon in WeaponConfigList) {

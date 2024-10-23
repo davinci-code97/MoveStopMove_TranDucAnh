@@ -1,34 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PatrolState : IState
 {
     float timer;
     float randomTime;
-    float minRandomTime = 3f;
-    float maxRandomTime = 6f;
+    float minRandomTime = 2f;
+    float maxRandomTime = 5f;
 
     public void OnEnter(Bot enemy) {
         timer = 0;
         randomTime = Random.Range(minRandomTime, maxRandomTime);
+
     }
 
     public void OnExecute(Bot enemy) {
         timer += Time.deltaTime;
+        NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
 
-        //if (enemy.Target != null) {
-        //    enemy.ChangeDirection(enemy.Target.transform.position.x > enemy.transform.position.x);
-        //    if (enemy.IsTargetInRange()) {
-        //        enemy.ChangeState(new AttackState());
-        //    }
-        //    else {
-        //        enemy.Moving();
-        //    }
-        //}
+        Vector3 randomPosition = LevelManager.Instance.GetRandomNavMeshPosition(LevelManager.Instance.spawnRadius);
 
         if (timer < randomTime) {
             //enemy.Moving();
+            agent.SetDestination(randomPosition);
         }
         else {
             enemy.ChangeState(new IdleState());

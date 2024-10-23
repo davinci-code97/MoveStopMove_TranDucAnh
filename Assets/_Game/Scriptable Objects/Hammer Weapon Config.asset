@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ba2b852e0ba154aaf1d3e90de59d62, type: 3}
   m_Name: Hammer Weapon Config
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
   itemType: 1
   buffType: 2
   buffValue: 1
   bulletType: 7
   damage: 1
-  bulletSpeed: 5
-  rotateSpeed: 5
+  bulletSpeed: 3
+  rotateSpeed: 1

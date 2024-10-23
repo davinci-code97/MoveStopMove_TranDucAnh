@@ -12,6 +12,7 @@ public class Character : GameUnit
 
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected Animator animator;
+    [SerializeField] protected GameObject model;
 
     [SerializeField] protected Weapon weapon;
     [SerializeField] protected GameObject hat;
@@ -43,6 +44,8 @@ public class Character : GameUnit
     private float throwSpeed = .2f;
     private float throwTimer = 0f;
 
+    private Vector3 shootPointOffset = new Vector3(0.36f, 1.13f, 0.55f);
+
     protected virtual void Start() {
         OnInit();
     }
@@ -50,9 +53,9 @@ public class Character : GameUnit
     protected virtual void Update() {
         if (IsDead) return;
 
-        if (charactersInRange.Count > 0) {
-            FindNearestTarget();
-        }
+        //if (charactersInRange.Count > 0) {
+        //    FindNearestTarget();
+        //}
     }
 
     protected virtual void OnTriggerEnter(Collider other) {
@@ -162,8 +165,7 @@ public class Character : GameUnit
             isAttacking = false;
             throwTimer = 0f;
             ChangeAnim(Constants.ANIM_RUN);
-            Quaternion rotation = Quaternion.LookRotation(rb.velocity, Vector3.up);
-            rb.rotation = rotation;
+            RotateModel(rb.velocity);
         }
     }
 
@@ -171,8 +173,7 @@ public class Character : GameUnit
         if (attackTimer < attackSpeed && canAttack) {
             isAttacking = true;
             Vector3 direction = nearestTarget.TF.position - TF.position;
-            Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-            rb.rotation = rotation;
+            RotateModel(direction);
             ChangeAnim(Constants.ANIM_ATTACK);
 
             throwTimer += Time.deltaTime;
@@ -190,6 +191,14 @@ public class Character : GameUnit
             canAttack = true;
         }
 
+    }
+
+    protected virtual void RotateModel(Vector3 direction) {
+        Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
+        model.transform.rotation = rotation;
+        shootPoint.position = model.transform.TransformPoint(shootPointOffset);
+        shootPoint.rotation = rotation;
+        //rb.rotation = rotation;
     }
 
     protected virtual void FindNearestTarget() {

@@ -792,10 +792,14 @@ MonoBehaviour:
   characterConfig: {fileID: 11400000, guid: 1409039101049c84483cb2ccadbfe72d, type: 2}
   rb: {fileID: 1497952869073228092}
   animator: {fileID: 1160722350465979263}
+  model: {fileID: 5245265071439072278}
   weapon: {fileID: 0}
+  hat: {fileID: 0}
+  pants: {fileID: 0}
   beingTargetedSprite: {fileID: 560066928307045225}
   rightHand: {fileID: 7540188669155211622}
   shootPoint: {fileID: 3749824167109301971}
+  hp: 0
   charactersInRange: []
 --- !u!136 &6219958431718429011
 CapsuleCollider:
@@ -1000,6 +1004,11 @@ PrefabInstance:
 --- !u!95 &1160722350465979263 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 4317546715825345823}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5245265071439072278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 4317546715825345823}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7540188669155211622 stripped

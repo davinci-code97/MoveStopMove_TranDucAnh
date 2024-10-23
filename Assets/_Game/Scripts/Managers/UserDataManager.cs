@@ -60,6 +60,10 @@ public class UserDataManager : MonoBehaviour
     public void IncreasePlayerGold(float number) {
         userData.gold += number;
     }
+
+    public bool CheckPurchasedItem(PoolType type) {
+        return true;
+    }
 }
 
 [Serializable]
