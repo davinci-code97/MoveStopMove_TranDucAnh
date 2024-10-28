@@ -15,6 +15,9 @@ public class Bullet : GameUnit
     private float bulletSpeed;
     [SerializeField] private float rotateSpeed;
 
+    private Vector3 shootPoint;
+    private float attackRange;
+
     void Start()
     {
         OnInit();
@@ -30,6 +33,12 @@ public class Bullet : GameUnit
     {
         TF.Rotate(rotateSpeed * Vector3.up, Space.Self);
         rb.velocity = direction * bulletSpeed;
+
+        float distance = Vector3.Distance(TF.position, shootPoint);
+        if (distance > attackRange)
+        {
+            HBPool.Despawn(this);
+        }
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -61,4 +70,11 @@ public class Bullet : GameUnit
 
     public Character GetOwner() { return owner; }
 
+    public void SetRange(float range) {
+        attackRange = range;
+    }
+
+    public void SetShootPoint(Vector3 position) {
+        shootPoint = position;
+    }
 }

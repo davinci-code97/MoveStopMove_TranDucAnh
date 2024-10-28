@@ -48,34 +48,38 @@ public class LevelManager : MonoBehaviour
         spawnRadius = currentLevelConfig.spawnRadius;
         countdownTime = currentLevelConfig.countdownTime;
         playerStartPoint = currentLevelConfig.playerStartPoint;
+        Player.Instance.SetPlayerPosition(playerStartPoint);
 
         for (int i = 0; i < maxCurrentBotCount; i++) {
             //SpawnBot();
         }
     }
 
-    
-
     public void SpawnBot() {
         if (currentBotsList.Count >= maxCurrentBotCount) return;
         if (botsCount <= 0) return;
-        // Ensure we don't exceed the active bots limit
-        //int activeBots = currentBotsList.FindAll(bot => bot.activeSelf).Count;
-        //if (activeBots >= activeBotsLimit) return;
 
-        Vector3 randomPosition = GetRandomNavMeshPosition(spawnRadius);
+        Vector3 randomPosition = GetRandomNavMeshPosition();
+
         System.Random random = new System.Random();
         int index = random.Next(botTypeList.Count);
+
         Bot bot = HBPool.Spawn<Bot>((PoolType)botTypeList[index], randomPosition, Quaternion.identity);
         currentBotsList.Add(bot);
+
+        // set bot weapon
     }
 
-    public Vector3 GetRandomNavMeshPosition(float radius) {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        randomDirection += transform.position;
+    public Vector3 GetRandomNavMeshPosition() {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * spawnRadius;
+        randomDirection += playerStartPoint;
+        randomDirection.y = 0;
         NavMeshHit hit;
-        NavMesh.SamplePosition(randomDirection, out hit, radius, 1);
-        return hit.position;
+        if (NavMesh.SamplePosition(randomDirection, out hit, spawnRadius, NavMesh.AllAreas)) {
+            return hit.position;
+        } else { 
+            return GetRandomNavMeshPosition(); 
+        }
     }
 
     public void RemoveFromCurrentBotsList(Character bot) {
@@ -87,13 +91,20 @@ public class LevelManager : MonoBehaviour
     }
 
     public WeaponConfig GetWeaponByWeaponType(WeaponType weaponPoolType) {
-        //Debug.Log((PoolType)weaponPoolType);    
+        //Debug.Log((PoolType)weaponPoolType);
         //Debug.Log(weaponPoolType);
         foreach (WeaponConfig weapon in WeaponConfigList) {
             if (weapon.itemType == (PoolType)weaponPoolType)
                 return weapon;
         }
         return null;
+    }
+
+    public WeaponConfig GetRandomWeaponType() {
+        System.Random random = new System.Random();
+        int index = random.Next(WeaponConfigList.Count);
+
+        return WeaponConfigList[index];
     }
 
 }

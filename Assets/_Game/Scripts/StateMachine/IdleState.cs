@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class IdleState : IState
 {
-    float timer;
-    float randomTime;
-    float minRandomTime = 2f;
-    float maxRandomTime = 4f;
+    private float timer;
+    private float randomTime;
+    private float minRandomTime = 0f;
+    private float maxRandomTime = 4f;
 
     public void OnEnter(Bot bot) {
         bot.StopMoving();
@@ -18,12 +19,16 @@ public class IdleState : IState
     public void OnExecute(Bot bot) {
         timer += Time.deltaTime;
 
-        if (bot.NearestTarget != null) {
+        if (bot.HasCharacterInRange) {
             bot.ChangeState(new AttackState());
         }
 
         if (timer > randomTime) {
-            bot.ChangeState(new PatrolState());
+            if (bot.HasCharacterInRange) {
+                bot.ChangeState(new AttackState());
+            } else { 
+                bot.ChangeState(new PatrolState());
+            }
         }
 
     }

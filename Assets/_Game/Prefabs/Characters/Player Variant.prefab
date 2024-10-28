@@ -76,6 +76,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7711602010153233509, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      propertyPath: m_Area
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7711602010153233509, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      propertyPath: m_IgnoreFromBuild
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8073939825063406472, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -132,12 +140,13 @@ MonoBehaviour:
   rb: {fileID: 4856727130651964146}
   animator: {fileID: 5167024562818363569}
   model: {fileID: 2262407283344666584}
-  weapon: {fileID: 0}
-  hat: {fileID: 0}
-  pants: {fileID: 0}
+  attackRangeCollider: {fileID: 5547757565744092286}
   beingTargetedSprite: {fileID: 5794587091129049255}
   rightHand: {fileID: 4542832402724805288}
   shootPoint: {fileID: 7180231574722032925}
+  weapon: {fileID: 0}
+  hat: {fileID: 0}
+  pants: {fileID: 0}
   hp: 0
   charactersInRange: []
   joystick: {fileID: 8135886326569738823, guid: 56fae09712773584fb63896d473a98ee, type: 3}
@@ -154,6 +163,11 @@ Rigidbody:
 --- !u!95 &5167024562818363569 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1160722350465979263, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+  m_PrefabInstance: {fileID: 6318343179428963278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &5547757565744092286 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 1968877577226008496, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
   m_PrefabInstance: {fileID: 6318343179428963278}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5794587091129049255 stripped

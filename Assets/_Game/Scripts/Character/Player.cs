@@ -50,7 +50,7 @@ public class Player : Character
     protected override void OnTriggerExit(Collider other) {
         base.OnTriggerExit(other);
         if (other.CompareTag(Constants.TAG_OBSTACLE)) {
-            Debug.Log("Obstacle out of range");
+            //Debug.Log("Obstacle out of range");
             MeshRenderer obstacleRenderer = other.GetComponentInChildren<MeshRenderer>();
             Color color = obstacleRenderer.material.color;
             color.a = 1f;
@@ -72,6 +72,32 @@ public class Player : Character
         weapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, rotation);
         weapon.SetWeaponParent(rightHand);
         weapon.SetOwner(this);
+        weapon.SetAttackRange(attackRange);
+    }
+
+    protected override void FindNearestTarget() {
+        base.FindNearestTarget();
+        nearestDistance = Mathf.Infinity;
+        if (charactersInRange.Count > 0) {
+            foreach (Character character in charactersInRange) {
+                Character target = character.GetComponent<Character>();
+                float distance = Vector3.Distance(TF.position, target.TF.position);
+                if (distance < nearestDistance) {
+                    if (nearestTarget) {
+                        nearestTarget.SetBeingTargetedSprite(false);
+                    }
+                    nearestDistance = distance;
+                    nearestTarget = target;
+                    nearestTarget.SetBeingTargetedSprite(true);
+                }
+                if (target != nearestTarget) {
+                    target.SetBeingTargetedSprite(false);
+                }
+            }
+        }
+        else {
+            nearestTarget = null;
+        }
     }
 
     protected override void Target_OnCharacterDead(object sender, Character target) {
@@ -81,14 +107,16 @@ public class Player : Character
     }
 
     public override void HandleMovement() {
-        if (joystick == null) return;
+        if (!joystick) return;
         base.HandleMovement();
         direction = joystick.Direction;
         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.y * moveSpeed);
     }
 
-
-
     //public override void Attack() { }
+
+    public Vector3 GetPlayerPosition() { return TF.position; }
+
+    public void SetPlayerPosition(Vector3 newPosition) => TF.position = newPosition;
 
 }

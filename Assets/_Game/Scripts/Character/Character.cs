@@ -12,15 +12,15 @@ public class Character : GameUnit
 
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected Animator animator;
-    [SerializeField] protected GameObject model;
+
+    [SerializeField] protected SphereCollider attackRangeCollider;
+    [SerializeField] protected GameObject beingTargetedSprite;
+    [SerializeField] protected Transform rightHand;
+    [SerializeField] protected Transform shootPoint;
 
     [SerializeField] protected Weapon weapon;
     [SerializeField] protected GameObject hat;
     [SerializeField] protected GameObject pants;
-
-    [SerializeField] protected GameObject beingTargetedSprite;
-    [SerializeField] protected Transform rightHand;
-    [SerializeField] protected Transform shootPoint;
 
     public bool IsDead { get; set; }
     //public bool IsTargeted { get; set; }
@@ -30,19 +30,20 @@ public class Character : GameUnit
     [SerializeField] protected float hp;
     protected float moveSpeed;
     protected float gold;
+    protected float attackRange;
 
     [SerializeField] protected List<Character> charactersInRange;
+    public bool HasCharacterInRange => charactersInRange.Count > 0;
     protected Character nearestTarget;
-    public Character NearestTarget => nearestTarget;
     protected float nearestDistance;
 
-    private string currentAnimName;
+    protected string currentAnimName;
 
-    private float attackSpeed = 1f;
-    private float attackTimer = 0f;
+    protected float attackSpeed = 1f;
+    protected float attackTimer = 0f;
 
-    private float throwSpeed = .2f;
-    private float throwTimer = 0f;
+    protected float throwSpeed = .2f;
+    protected float throwTimer = 0f;
 
     private Vector3 shootPointOffset = new Vector3(0.36f, 1.13f, 0.55f);
 
@@ -53,9 +54,14 @@ public class Character : GameUnit
     protected virtual void Update() {
         if (IsDead) return;
 
-        //if (charactersInRange.Count > 0) {
-        //    FindNearestTarget();
-        //}
+        if (!canAttack) {
+            attackTimer += Time.deltaTime;
+            if (attackTimer > attackSpeed) {
+                attackTimer = 0f;
+                canAttack = true;
+                weapon.SetWeaponActive(true);
+            }
+        }
     }
 
     protected virtual void OnTriggerEnter(Collider other) {
@@ -63,7 +69,7 @@ public class Character : GameUnit
             Character target = other.GetComponent<Character>();
             charactersInRange.Add(target);
             target.OnCharacterDead += Target_OnCharacterDead;
-            FindNearestTarget();
+            //FindNearestTarget();
 
             Debug.Log("Enemy entered range: " + other.name);
             Debug.Log($"Enemies in range: {charactersInRange.Count}");
@@ -76,10 +82,10 @@ public class Character : GameUnit
             if (target == nearestTarget) {
                 target.SetBeingTargetedSprite(false);
                 nearestTarget = null;
+                //FindNearestTarget();
             }
             RemoveFromRange(target);
             target.OnCharacterDead -= Target_OnCharacterDead;
-            FindNearestTarget();
 
             Debug.Log("Enemy exited range: " + other.name);
             Debug.Log($"Enemies in range: {charactersInRange.Count}");
@@ -91,6 +97,7 @@ public class Character : GameUnit
         canAttack = true;
         moveSpeed = characterConfig.moveSpeed;
         hp = characterConfig.hp;
+        attackRange = attackRangeCollider.radius;
         gold = characterConfig.gold;
         SetUpCurrentWeapon();
     }
@@ -101,6 +108,7 @@ public class Character : GameUnit
 
             if (hp <= 0) {
                 hp = 0;
+                IsDead = true;
                 OnDeath(bullet.GetOwner());
             }
         }
@@ -111,7 +119,7 @@ public class Character : GameUnit
         IsDead = true;
         SetBeingTargetedSprite(false);
         ChangeAnim(Constants.ANIM_DEAD);
-        StartCoroutine(DespawnAfterDelay(2f));
+        //StartCoroutine(DespawnAfterDelay(2f));
         OnCharacterDead?.Invoke(this, this);
 
         Character killer = character.GetComponent<Character>();
@@ -121,7 +129,7 @@ public class Character : GameUnit
         UIManager.Instance.ShowNoti(this);
     }
 
-    private IEnumerator DespawnAfterDelay(float delay) {
+    protected IEnumerator DespawnAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         OnDespawn();
     }
@@ -161,75 +169,45 @@ public class Character : GameUnit
         if (rb.velocity.Equals(Vector3.zero) && !isAttacking) {
             ChangeAnim(Constants.ANIM_IDLE);
         }
-        else if (rb.velocity != Vector3.zero) {
+        else if (!rb.velocity.Equals(Vector3.zero)) {
             isAttacking = false;
             throwTimer = 0f;
             ChangeAnim(Constants.ANIM_RUN);
-            RotateModel(rb.velocity);
+            RotateCharacter(rb.velocity);
         }
     }
 
-    public virtual void Attack() {
+    protected virtual void Attack() {
         if (attackTimer < attackSpeed && canAttack) {
             isAttacking = true;
             Vector3 direction = nearestTarget.TF.position - TF.position;
-            RotateModel(direction);
+            RotateCharacter(direction);
             ChangeAnim(Constants.ANIM_ATTACK);
 
             throwTimer += Time.deltaTime;
             if (throwTimer > throwSpeed) {
-                weapon.Fire(shootPoint.position, nearestTarget);
+                weapon.Fire(shootPoint.position, nearestTarget, attackRange);
                 throwTimer = 0f;
                 canAttack = false;
+                weapon.SetWeaponActive(false);
             }
 
         }
 
-        attackTimer += Time.deltaTime;
-        if (attackTimer > attackSpeed) {
-            attackTimer = 0f;
-            canAttack = true;
-        }
-
     }
 
-    protected virtual void RotateModel(Vector3 direction) {
+    protected virtual void RotateCharacter(Vector3 direction) {
         Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
-        model.transform.rotation = rotation;
-        shootPoint.position = model.transform.TransformPoint(shootPointOffset);
-        shootPoint.rotation = rotation;
-        //rb.rotation = rotation;
+        rb.MoveRotation(rotation);
     }
 
     protected virtual void FindNearestTarget() {
-        nearestDistance = Mathf.Infinity;
-        if (charactersInRange.Count > 0) {
-            foreach (Character character in charactersInRange) {
-                Character target = character.GetComponent<Character>();
-                float distance = Vector3.Distance(TF.position, target.TF.position);
-                if (distance < nearestDistance) {
-                    if (nearestTarget != null) {
-                        nearestTarget.SetBeingTargetedSprite(false);
-                    }
-                    nearestDistance = distance;
-                    nearestTarget = target;
-                    nearestTarget.SetBeingTargetedSprite(true);
-                }
-                if (target != nearestTarget) {
-                    target.SetBeingTargetedSprite(false);
-                }
-            }
-        }
-        else {
-            nearestTarget = null;
-        }
+        
     }
 
     public void SetBeingTargetedSprite(bool isTargeted) => beingTargetedSprite.SetActive(isTargeted);
 
-    public float GetCharacterGoldValue() {
-        return gold;
-    }
+    public float GetCharacterGoldValue() => gold;
 
     public void IncreaseCharacterGoldValue(float value) {
         this.gold += value;

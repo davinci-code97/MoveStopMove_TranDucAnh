@@ -10,6 +10,7 @@ public class Weapon : GameUnit
     public BuffType buffType;
     public int buffValue;
     public Character owner;
+    public float attackRange;
 
     private void Start() {
         OnInit();
@@ -19,21 +20,31 @@ public class Weapon : GameUnit
         bulletType = config.bulletType;
         buffType = config.buffType;
         buffValue = config.buffValue;
-        SetOwner(owner);
+        //SetOwner(owner);
     }
 
     public void SetOwner(Character character) {
         owner = character;
     }
 
+    public void SetAttackRange(float range) {
+        attackRange = range;
+    }
+
     public void SetWeaponParent(Transform parent) {
         transform.SetParent(parent);
     }
 
-    public void Fire(Vector3 shootPoint, Character target) {
+    public void SetWeaponActive(bool active) {
+        gameObject.SetActive(active);
+    }
+
+    public void Fire(Vector3 shootPoint, Character target, float range) {
         Bullet bullet = HBPool.Spawn<Bullet>((PoolType)bulletType, shootPoint, Quaternion.identity);
-        bullet.SetTarget(target);
         bullet.SetOwner(owner);
+        bullet.SetTarget(target);
+        bullet.SetShootPoint(shootPoint);
+        bullet.SetRange(range);
     }
 
 }
