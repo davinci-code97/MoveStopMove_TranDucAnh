@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 653860937886878981}
   - component: {fileID: 3424771274566648049}
   m_Layer: 5
-  m_Name: Button - Unequip
+  m_Name: Button - Equipped
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -544,7 +544,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 653860937886878981}
   m_OnClick:
     m_PersistentCalls:
@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 625592033927279630}
   - component: {fileID: 4627745370729177367}
   m_Layer: 5
-  m_Name: Text (TMP) - Unequip
+  m_Name: Text (TMP) - Equipped
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Unequip
+  m_text: Equipped
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1195,11 +1195,10 @@ MonoBehaviour:
   uiShopItemPrefab: {fileID: 1982584267303368172, guid: bd913b8581273cf4fb62461319696436, type: 3}
   playerGoldText: {fileID: 211129106237706644}
   equipButton: {fileID: 4688840113905039882}
+  equippedButton: {fileID: 3424771274566648049}
   buyButton: {fileID: 3049120077761106204}
   priceText: {fileID: 3992137626312392501}
   buffDescText: {fileID: 1975679756033851782}
-  currentShopItem: {fileID: 0}
-  equipedShopItem: {fileID: 0}
 --- !u!1 &3561976068279824911
 GameObject:
   m_ObjectHideFlags: 0

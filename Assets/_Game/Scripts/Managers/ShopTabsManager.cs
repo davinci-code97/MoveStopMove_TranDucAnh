@@ -23,12 +23,13 @@ public class ShopTabsManager : MonoBehaviour
 
     [SerializeField] private TMP_Text playerGoldText;
     [SerializeField] private Button equipButton;
+    [SerializeField] private Button equippedButton;
     [SerializeField] private Button buyButton;
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private TMP_Text buffDescText;
 
-    [SerializeField] private UIShopItem currentShopItem;
-    [SerializeField] private UIShopItem equipedShopItem;
+    private UIShopItem currentShopItem;
+    private UIShopItem equipedShopItem;
 
     void Start() {
         SetupShopPages();
@@ -65,14 +66,19 @@ public class ShopTabsManager : MonoBehaviour
         if (shopItemUI.isPurchased) {
             equipButton.gameObject.SetActive(true);
             buyButton.gameObject.SetActive(false);
+            equippedButton.gameObject.SetActive(false);
 
             if (shopItemUI.isEquipped) {
                 equipedShopItem = shopItemUI;
+                equippedButton.gameObject.SetActive(true);
+                equipButton.gameObject.SetActive(false);
+                buyButton.gameObject.SetActive(false);
             }
 
         }
         else {
             equipButton.gameObject.SetActive(false);
+            equippedButton.gameObject.SetActive(false);
             buyButton.gameObject.SetActive(true);
             priceText.SetText(shopItem.price.ToString());
         }
