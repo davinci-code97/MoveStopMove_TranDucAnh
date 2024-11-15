@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -87,7 +86,7 @@ public class ShopTabsManager : MonoBehaviour
     }
 
     public void Purchase() {
-        if (!UserDataManager.Instance.IsPurchaseable(currentShopItem.shopItem.price)) return;
+        if (currentShopItem.shopItem.price > UserDataManager.Instance.userData.gold) return;
         currentShopItem.PurchaseShopItem();
         SetupShopItemOptions(currentShopItem);
         UpdatePlayerGoldText();

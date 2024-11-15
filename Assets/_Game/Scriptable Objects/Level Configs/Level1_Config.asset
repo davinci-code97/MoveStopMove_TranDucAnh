@@ -15,7 +15,7 @@ MonoBehaviour:
   level: 1
   levelPrefab: {fileID: 3185518418666564449, guid: 044466c953df92a4abcf974d6351830b, type: 3}
   botTypeList: 18000000
-  botCount: 10
+  botCount: 50
   maxCurrentBotCount: 7
   spawnRadius: 30
   countdownTime: 0

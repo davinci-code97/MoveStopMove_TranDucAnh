@@ -201,7 +201,7 @@ public class UserData {
     public UserData() {
         level = 1;
         rank = 50;
-        gold = 100;
+        gold = 10;
         weaponData = new();
         hatData = new();
         pantsData = new();

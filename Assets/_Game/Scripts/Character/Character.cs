@@ -201,7 +201,7 @@ public class Character : GameUnit
         if (currentWeapon != null) {
             HBPool.Despawn(currentWeapon);
         }
-        currentWeapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, Quaternion.identity);
+        currentWeapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, rightHand.rotation);
         currentWeapon.SetWeaponParent(rightHand);
         currentWeapon.SetWeaponOwner(this);
         currentWeapon.SetAttackRange(attackRange);
@@ -216,7 +216,7 @@ public class Character : GameUnit
         if (currentHat) {
             HBPool.Despawn(currentHat);
         }
-        currentHat = HBPool.Spawn<Hat>(hatConfig.itemType, hatPos.transform.position, Quaternion.identity);
+        currentHat = HBPool.Spawn<Hat>(hatConfig.itemType, hatPos.position, hatPos.rotation);
         currentHat.SetHatParent(hatPos);
     }
 

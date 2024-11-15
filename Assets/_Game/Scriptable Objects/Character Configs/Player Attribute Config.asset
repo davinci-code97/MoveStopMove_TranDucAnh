@@ -15,4 +15,4 @@ MonoBehaviour:
   BotType: 0
   moveSpeed: 5
   hp: 1
-  gold: 0
+  gold: 1
