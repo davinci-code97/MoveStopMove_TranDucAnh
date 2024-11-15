@@ -34,6 +34,7 @@ public class Bullet : GameUnit
         TF.Rotate(rotateSpeed * Vector3.up, Space.Self);
         rb.velocity = direction * bulletSpeed;
 
+        // despawn khi qua range
         float distance = Vector3.Distance(TF.position, shootPoint);
         if (distance > attackRange)
         {
@@ -42,29 +43,32 @@ public class Bullet : GameUnit
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.CompareTag(Constants.TAG_CHARACTER) && collision.gameObject != owner.gameObject) {
-            Character character = collision.gameObject.GetComponent<Character>();
-            character.OnHit(this, damage);
+        CheckCollideWithCharacter(collision);
+        CheckCollideWithMap(collision);
+    }
 
+    private void CheckCollideWithCharacter(Collision collision) {
+        if (collision.gameObject.CompareTag(Constants.TAG_OBSTACLE) || collision.gameObject.CompareTag(Constants.TAG_WALL)) {
+            SoundManager.Instance.PlayHitSFX(TF.position);
             HBPool.Despawn(this);
         }
     }
 
-    //private void OnTriggerEnter(Collider other) {
-    //    if (other.CompareTag(Constants.TAG_CHARACTER)) {
-    //        Character character = other.GetComponent<Character>();
-    //        character.OnHit(damage);
+    private void CheckCollideWithMap(Collision collision) {
+        if (collision.gameObject.CompareTag(Constants.TAG_CHARACTER) && collision.gameObject != owner.gameObject) {
+            Character character = collision.gameObject.GetComponent<Character>();
+            character.OnHit(this, damage);
+            HBPool.Despawn(this);
+        }
+    }
 
-    //        HBPool.Despawn(this);
-    //    }
-    //}
     
     public void SetTarget(Character character) {
         target = character;
         direction = target.transform.position - TF.position;
     }
 
-    public void SetOwner(Character character) {
+    public void SetBulletOwner(Character character) {
         owner = character;
     }
 

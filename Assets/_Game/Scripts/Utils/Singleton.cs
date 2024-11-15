@@ -6,7 +6,7 @@ using UnityEngine;
     {
         private static T ins;
 
-        public static T Ins
+        public static T Instance
         {
             get
             {

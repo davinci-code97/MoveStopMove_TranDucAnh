@@ -23,7 +23,7 @@ public class Weapon : GameUnit
         //SetOwner(owner);
     }
 
-    public void SetOwner(Character character) {
+    public void SetWeaponOwner(Character character) {
         owner = character;
     }
 
@@ -32,7 +32,7 @@ public class Weapon : GameUnit
     }
 
     public void SetWeaponParent(Transform parent) {
-        transform.SetParent(parent);
+        TF.SetParent(parent);
     }
 
     public void SetWeaponActive(bool active) {
@@ -40,8 +40,9 @@ public class Weapon : GameUnit
     }
 
     public void Fire(Vector3 shootPoint, Character target, float range) {
+        SoundManager.Instance.PlayShootSFX(TF.position);
         Bullet bullet = HBPool.Spawn<Bullet>((PoolType)bulletType, shootPoint, Quaternion.identity);
-        bullet.SetOwner(owner);
+        bullet.SetBulletOwner(owner);
         bullet.SetTarget(target);
         bullet.SetShootPoint(shootPoint);
         bullet.SetRange(range);

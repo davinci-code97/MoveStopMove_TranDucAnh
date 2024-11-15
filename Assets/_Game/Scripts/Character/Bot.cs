@@ -7,57 +7,66 @@ using UnityEngine.AI;
 public class Bot : Character
 {
     [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private Waypoint_Indicator indicator;
 
     private IState currentState;
-
-    protected override void Start()
-    {
-        base.Start();
-    }
 
     protected override void Update()
     {
         base.Update();
-
         if (!IsDead) {
             currentState?.OnExecute(this);
         }
-
     }
 
-    protected override void OnInit() {
+    public override void OnInit() {
         base.OnInit();
-
+        SetUpModelColor();
+        indicator.offScreenSpriteColor = modelMeshRenderder.material.color;
         ChangeState(new IdleState());
     }
 
-    protected override void OnDeath(Character character) {
-        base.OnDeath(character);
-        agent.SetDestination( transform.position );
-        ResetNavMeshNavigation();
-        ChangeState(new DeadState());
-        StartCoroutine(DespawnAfterDelay(2f));
+    private void SetUpModelColor() {
+        Color randomColor = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        modelMeshRenderder.material.color = randomColor;
     }
 
     protected override void SetUpCurrentWeapon() {
-        base.SetUpCurrentWeapon();
-        WeaponConfig weaponConfig = LevelManager.Instance.GetRandomWeaponType();
-        //if (weaponConfig == null) { return; }
-        //Debug.Log(weaponConfig.itemType);
-        Quaternion rotation = Quaternion.Euler(0, -90, 0);
-        weapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, rotation);
-        weapon.SetWeaponParent(rightHand);
-        weapon.SetOwner(this);
-        weapon.SetAttackRange(attackRange);
+        base .SetUpCurrentWeapon();
+        WeaponConfig weaponConfig = LevelManager.Instance.GetRandomWeaponConfig();
+        SetUpWeapon(weaponConfig);
+    }
+
+    protected override void SetUpCurrentHat() {
+        base.SetUpCurrentHat();
+        HatConfig hatConfig = LevelManager.Instance.GetRandomHatConfig();
+        SetUpHat(hatConfig);
+    }
+
+    protected override void SetUpCurrentPants() {
+        base.SetUpCurrentPants();
+        PantsConfig pantsConfig = LevelManager.Instance.GetRandomPantsConfig();
+        SetUpPants(pantsConfig);
+    }
+
+    protected override void Character_OnCharacterDead(object sender, OnCharacterDeadEventArgs e) {
+        base.Character_OnCharacterDead(sender, e);
+        agent.SetDestination(transform.position);
+        ResetNavMeshNavigation();
+        ChangeState(new DeadState());
+        StartCoroutine(DespawnAfterDelay(2f));
+
+        if (GameManager.Instance.currentState == GameState.PLAYING) {
+            LevelManager.Instance.SetCharacterRemain();
+        }
+        LevelManager.Instance.RemoveFromCurrentBotList(e.character);
     }
 
     public void ChangeState(IState newState) {
         if (currentState != null) {
             currentState.OnExit(this);
         }
-
         currentState = newState;
-
         if (currentState != null) {
             currentState.OnEnter(this);
         }
@@ -103,11 +112,6 @@ public class Bot : Character
         }
     }
 
-    protected override void Target_OnCharacterDead(object sender, Character target) {
-        base.Target_OnCharacterDead(sender, target);
-        //IncreaseBotGoldValue(target);
-    }
-
     public void ResetNavMeshNavigation() {
         agent.isStopped = true;
         agent.ResetPath();
@@ -116,4 +120,5 @@ public class Bot : Character
     public void botAttack() {
         Attack();
     }
+
 }

@@ -19,15 +19,18 @@ public class IdleState : IState
     public void OnExecute(Bot bot) {
         timer += Time.deltaTime;
 
-        if (bot.HasCharacterInRange) {
-            bot.ChangeState(new AttackState());
-        }
-
-        if (timer > randomTime) {
+        if (GameManager.Instance.currentState == GameState.PLAYING) {
             if (bot.HasCharacterInRange) {
                 bot.ChangeState(new AttackState());
-            } else { 
-                bot.ChangeState(new PatrolState());
+            }
+
+            if (timer > randomTime) {
+                if (bot.HasCharacterInRange) {
+                    bot.ChangeState(new AttackState());
+                }
+                else {
+                    bot.ChangeState(new PatrolState());
+                }
             }
         }
 
@@ -36,5 +39,6 @@ public class IdleState : IState
     public void OnExit(Bot bot) {
 
     }
+
 
 }

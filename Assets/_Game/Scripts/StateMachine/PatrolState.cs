@@ -5,8 +5,8 @@ public class PatrolState : IState
 {
     private float timer;
     private float randomTime;
-    private float minRandomTime = 1f;
-    private float maxRandomTime = 4f;
+    private float minRandomTime = 2f;
+    private float maxRandomTime = 5f;
 
     public void OnEnter(Bot enemy) {
         timer = 0;

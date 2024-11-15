@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e1d17aacfa87d459f5ff562c022752, type: 3}
+  m_Name: Level3_Config
+  m_EditorClassIdentifier: 
+  level: 1
+  levelPrefab: {fileID: 3185518418666564449, guid: abd36237683ce4841994b322cf016682, type: 3}
+  botTypeList: 18000000
+  botCount: 150
+  maxCurrentBotCount: 9
+  spawnRadius: 30
+  countdownTime: 0
+  playerStartPoint: {x: 0, y: 0, z: 0}

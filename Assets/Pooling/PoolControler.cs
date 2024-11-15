@@ -90,25 +90,25 @@ public enum PoolType
     Boomerang_Bullet,
     SwirlyPop_Bullet,
 
-    //Pants
-    PantsA,
-
     //Hats
-    HatA,
+    Hat_Arrow,
+    Hat_Crown,
 
-    //
-    Accessory,
-
-    //
-    Cosmetic,
+    //Pants
+    Pants_Batman,
+    Pants_chambi,
+    Pants_comy,
+    Pants_dabao,
+    Pants_onion,
+    Pants_pokemon,
+    Pants_rainbow,
+    Pants_Skull,
+    Pants_vantim,
 
     // Bots
     Bot_Default,
 
-    //
-    Bullet,
-    DashShadow,
-    HpText,
+    
 }
 
 public enum BulletType {

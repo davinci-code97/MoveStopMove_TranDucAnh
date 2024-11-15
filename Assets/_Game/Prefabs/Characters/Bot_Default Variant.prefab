@@ -94,15 +94,23 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8082155735719161507, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4424321516296857581}
+    - targetCorrespondingSourceObject: {fileID: 8082155735719161507, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6688207369209339933}
   m_SourcePrefab: {fileID: 100100000, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
---- !u!1 &9701682635064993 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5245265071439072278, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+--- !u!137 &838902116727655457 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4849526242550744726, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
   m_PrefabInstance: {fileID: 5253619852224760503}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2327440504199312337 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7540188669155211622, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+  m_PrefabInstance: {fileID: 5253619852224760503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4053694453670337728 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8118027273974699639, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
   m_PrefabInstance: {fileID: 5253619852224760503}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4089566127483593748 stripped
@@ -122,21 +130,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e65f71ccb4c72243ab361ec4360ac77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 17
+  poolType: 24
   characterConfig: {fileID: 11400000, guid: 1409039101049c84483cb2ccadbfe72d, type: 2}
   rb: {fileID: 6638683366016097163}
   animator: {fileID: 6409516964094253512}
-  model: {fileID: 9701682635064993}
   attackRangeCollider: {fileID: 6033205922040757511}
   beingTargetedSprite: {fileID: 5705315863996107230}
   rightHand: {fileID: 2327440504199312337}
   shootPoint: {fileID: 8998920335348046948}
-  weapon: {fileID: 0}
-  hat: {fileID: 0}
-  pants: {fileID: 0}
+  currentWeapon: {fileID: 0}
+  currentHat: {fileID: 0}
+  hatPos: {fileID: 4053694453670337728}
+  modelMeshRenderder: {fileID: 8378239612399028546}
+  pantsMeshRenderder: {fileID: 838902116727655457}
   hp: 0
   charactersInRange: []
+  baseKillRequirement: 2
+  growValue: 0.1
   agent: {fileID: 4424321516296857581}
+  indicator: {fileID: 6688207369209339933}
 --- !u!195 &4424321516296857581
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -159,6 +171,98 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 3
+--- !u!114 &6688207369209339933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089566127483593748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8057c976b872b494aba079f605e2e5b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableStandardTracking: 1
+  enableCenteredTracking: 0
+  showBoundaryBox: 0
+  boundaryBoxColor: {r: 1, g: 1, b: 0.4, a: 1}
+  parentSize: {x: 75, y: 75}
+  displayRange: 50
+  enableSprite: 1
+  spriteDepth: 0
+  offScreenSpriteRotates: 1
+  onScreenSprite: {fileID: 0}
+  onScreenSpriteColor: {r: 1, g: 1, b: 1, a: 1}
+  onScreenSpriteSize: 1
+  onScreenSpriteOffset: {x: 0, y: 0}
+  onScreenSpriteRotation: 360
+  onScreenSpriteFadeWithRange: 0
+  onScreenSpriteScaleWithRange: 0
+  onScreenSpriteHide: 1
+  offScreenSprite: {fileID: 21300000, guid: 1490a024e022bff45aa1666e1de2585c, type: 3}
+  offScreenSpriteColor: {r: 1, g: 0, b: 0, a: 1}
+  offScreenSpriteSize: 0.2
+  offScreenSpriteOffset: {x: 0, y: 0}
+  offScreenSpriteRotation: 360
+  offScreenSpriteFadeWithRange: 0
+  offScreenScaleWithRange: 0
+  offScreenSpriteHide: 0
+  enableGameObject: 0
+  gameObjectDepth: 0
+  offScreenObjectRotates: 1
+  onScreenGameObject: {fileID: 0}
+  onScreenGameObjectColor: {r: 1, g: 1, b: 1, a: 1}
+  onScreenGameObjectSize: 1
+  onScreenGameObjectOffset: {x: 0, y: 0}
+  onScreenGameObjectRotation: 0
+  onScreenGameObjectFadeWithRange: 0
+  onScreenGameObjectScaleWithRange: 0
+  onScreenGameObjectHide: 1
+  offScreenGameObject: {fileID: 0}
+  offScreenGameObjectColor: {r: 1, g: 1, b: 1, a: 1}
+  offScreenGameObjectSize: 1
+  offScreenGameObjectOffset: {x: 0, y: 0}
+  offScreenGameObjectRotation: 0
+  offScreenGameObjectFadeWithRange: 0
+  offScreenGameObjectScaleWithRange: 0
+  offScreenGameObjectHide: 0
+  enableText: 0
+  textDepth: 0
+  textDescription: Hello!
+  textFont: {fileID: 0}
+  textSize: 15
+  textColor: {r: 0, g: 0, b: 0, a: 1}
+  textAlign: 1
+  textLineSpacing: 20
+  textRectWidth: 80
+  textRectHeight: 50
+  onScreenSpriteHideDesc: 0
+  onScreenSpriteHideDist: 0
+  onScreenTextOffset: {x: 0, y: 0}
+  offScreenSpriteHideDesc: 0
+  offScreenSpriteHideDist: 0
+  offScreenTextOffset: {x: 0, y: 0}
+  showDiameter: 0
+  diameterColor: {r: 0, g: 0, b: 0, a: 1}
+  diameterSize: 50
+  enableRadiusGizmo: 0
+  radiusGizmoColor: {r: 0, g: 0, b: 0, a: 1}
+  radiusGizmoSize: 50
+  onScreenCenteredRange: 25
+  onScreenCenteredSpriteColor: {r: 1, g: 1, b: 1, a: 1}
+  onScreenCenteredSprite: {fileID: 0}
+  onScreenCenteredSpriteSize: 1
+  onScreenCenteredSpriteRotation: 0
+  onScreenSpriteCenteredFadeWithRange: 0
+  onScreenSpriteCenteredScaleWithRange: 0
+  toggleParentOptions: 0
+  toggleSpriteOptions: 1
+  toggleGameObjectOptions: 1
+  toggleTextOptions: 1
+  toggleDiameterOptions: 0
+  toggleCenteredSpriteOptions: 0
+  toggleRadiusGizmoOptions: 0
 --- !u!1 &5705315863996107230 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 560066928307045225, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
@@ -177,6 +281,11 @@ Animator:
 --- !u!54 &6638683366016097163 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 1497952869073228092, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+  m_PrefabInstance: {fileID: 5253619852224760503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8378239612399028546 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4372405771379049461, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
   m_PrefabInstance: {fileID: 5253619852224760503}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8998920335348046948 stripped

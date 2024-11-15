@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48772bc09ab9ec243b6b7e2a1dd4ae62, type: 3}
+  m_Name: ShopDataSO
+  m_EditorClassIdentifier: 
+  shopWeaponDataList:
+    shopItemsDataList:
+    - sprite: {fileID: 21300000, guid: b17dd566c59688f4cb4fc4e8ef21b01e, type: 3}
+      price: 0
+      buffType: 1
+      buffValue: 1
+      buffDescription: 
+      type: 1
+    - sprite: {fileID: 21300000, guid: c54f2b18cf95e46488dd0ef110ffef9c, type: 3}
+      price: 10
+      buffType: 1
+      buffValue: 3
+      buffDescription: 
+      type: 2
+    - sprite: {fileID: 21300000, guid: 4f81b94c47edc4a4c9f00f66b33aaec8, type: 3}
+      price: 20
+      buffType: 2
+      buffValue: 5
+      buffDescription: 
+      type: 3
+  shopHatDataList:
+    shopItemsDataList:
+    - sprite: {fileID: 21300000, guid: 73b497eb58db4514aa7ff99a590019ca, type: 3}
+      price: 10
+      buffType: 1
+      buffValue: 2
+      buffDescription: 
+      type: 13
+    - sprite: {fileID: 21300000, guid: 54e3231965686a043b3f1c1d717c42dc, type: 3}
+      price: 20
+      buffType: 1
+      buffValue: 3
+      buffDescription: 
+      type: 14
+  shopPantsDataList:
+    shopItemsDataList:
+    - sprite: {fileID: 21300000, guid: 6a4497357083aab4e8acb976b0801096, type: 3}
+      price: 10
+      buffType: 3
+      buffValue: 2
+      buffDescription: 
+      type: 15
+    - sprite: {fileID: 21300000, guid: bf8d93c60e5a55f4eba20f15953dddf2, type: 3}
+      price: 20
+      buffType: 3
+      buffValue: 3
+      buffDescription: 
+      type: 16

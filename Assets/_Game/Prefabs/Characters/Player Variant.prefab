@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1421519607965864053, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1497952869073228092, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1497952869073228092, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 0
@@ -113,9 +121,14 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8764887301993679129}
   m_SourcePrefab: {fileID: 100100000, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
---- !u!1 &2262407283344666584 stripped
+--- !u!1 &155805691233181273 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5245265071439072278, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6162837260439928215, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+  m_PrefabInstance: {fileID: 6318343179428963278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1505250974263682392 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4849526242550744726, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
   m_PrefabInstance: {fileID: 6318343179428963278}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2848199622089575789 stripped
@@ -139,16 +152,19 @@ MonoBehaviour:
   characterConfig: {fileID: 11400000, guid: 1409039101049c84483cb2ccadbfe72d, type: 2}
   rb: {fileID: 4856727130651964146}
   animator: {fileID: 5167024562818363569}
-  model: {fileID: 2262407283344666584}
   attackRangeCollider: {fileID: 5547757565744092286}
   beingTargetedSprite: {fileID: 5794587091129049255}
   rightHand: {fileID: 4542832402724805288}
   shootPoint: {fileID: 7180231574722032925}
+  modelMeshRenderder: {fileID: 7710906138371989563}
   weapon: {fileID: 0}
   hat: {fileID: 0}
-  pants: {fileID: 0}
+  hatPos: {fileID: 155805691233181273}
+  pantsMeshRenderder: {fileID: 1505250974263682392}
   hp: 0
   charactersInRange: []
+  baseKillRequirement: 2
+  growValue: 0.1
   joystick: {fileID: 8135886326569738823, guid: 56fae09712773584fb63896d473a98ee, type: 3}
 --- !u!4 &4542832402724805288 stripped
 Transform:
@@ -178,5 +194,10 @@ GameObject:
 --- !u!4 &7180231574722032925 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3749824167109301971, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
+  m_PrefabInstance: {fileID: 6318343179428963278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7710906138371989563 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4372405771379049461, guid: b0e91b77f41b3804b8904c46c4a6bf25, type: 3}
   m_PrefabInstance: {fileID: 6318343179428963278}
   m_PrefabAsset: {fileID: 0}

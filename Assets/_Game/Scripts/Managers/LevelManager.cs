@@ -5,69 +5,110 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEditor.Progress;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
-    public static LevelManager Instance { get; private set; }
 
     public List<LevelConfig> LevelConfigList;
-    public LevelConfig currentLevelConfig;
+    [SerializeField] private LevelConfig currentLevelConfig;
+    [SerializeField] private LevelPrefab currentLevelPrefab;
+    
 
     public List<WeaponConfig> WeaponConfigList;
-    public List<ItemConfig> HatConfigList;
+    public List<HatConfig> HatConfigList;
+    public List<PantsConfig> PantsConfigList;
 
     //public List<CharacterConfig> BotConfigs;
-    public List<Character> currentBotsList = new List<Character>();
-    public List<BotType> botTypeList;
-    public int botsCount;
+    [SerializeField] private List<Character> currentBotList = new List<Character>();
+    [SerializeField] private List<BotType> botTypeList;
+    public int levelBotsCount { get; private set; }
+    public int botsRemain { get; private set; }
     private int maxCurrentBotCount;
-    public float spawnRadius;
+    private float spawnRadius;
 
-    private float countdownTime;
     private Vector3 playerStartPoint;
 
-    private void Awake() {
-        Instance = this;
-    }
+    private float countdownTime;
 
     void Start()
     {
         OnInit();
-
-    }
-
-    void Update()
-    {
-        
     }
 
     private void OnInit() {
+        SetupMap();
+        SetupLevel();
+        SetupBots();
+    }
+
+    private void SetupMap() {
         currentLevelConfig = LevelConfigList[UserDataManager.Instance.GetCurrentLevel()];
+        if (currentLevelPrefab != null ) {
+            Destroy( currentLevelPrefab );
+        }
+        currentLevelPrefab = Instantiate(currentLevelConfig.levelPrefab, Vector3.zero, Quaternion.identity);
+        playerStartPoint = currentLevelConfig.playerStartPoint;
+        Player.Instance.SetPlayerPosition(playerStartPoint);
+    }
+
+    private void SetupLevel() {
         botTypeList = currentLevelConfig.botTypeList;
-        botsCount = currentLevelConfig.botCount;
+        levelBotsCount = currentLevelConfig.botCount;
         maxCurrentBotCount = currentLevelConfig.maxCurrentBotCount;
         spawnRadius = currentLevelConfig.spawnRadius;
         countdownTime = currentLevelConfig.countdownTime;
-        playerStartPoint = currentLevelConfig.playerStartPoint;
-        Player.Instance.SetPlayerPosition(playerStartPoint);
+    }
 
+    private void SetupBots() {
+        botsRemain = levelBotsCount;
         for (int i = 0; i < maxCurrentBotCount; i++) {
-            //SpawnBot();
+            SpawnBot();
         }
     }
 
-    public void SpawnBot() {
-        if (currentBotsList.Count >= maxCurrentBotCount) return;
-        if (botsCount <= 0) return;
+    public void ResetLevel() {
+        Player.Instance.SetPlayerPosition(playerStartPoint);
+        Player.Instance.OnInit();
+        DespawnAllBots();
+        SetupBots();
+    }
 
-        Vector3 randomPosition = GetRandomNavMeshPosition();
+    public void SpawnBot() {
+        if( (currentBotList.Count >= maxCurrentBotCount) 
+            || (botsRemain <= currentBotList.Count) )
+            return;
+
+        Vector3 randomPosition = GetRandomBotSpawnPosition();
 
         System.Random random = new System.Random();
         int index = random.Next(botTypeList.Count);
 
         Bot bot = HBPool.Spawn<Bot>((PoolType)botTypeList[index], randomPosition, Quaternion.identity);
-        currentBotsList.Add(bot);
+        currentBotList.Add(bot);
+        bot.OnInit();
+    }
 
-        // set bot weapon
+    public void SetCharacterRemain() {
+        botsRemain--;
+        UIGamePlaying.Instance.UpdateBotRemainsNumber(botsRemain);
+        SpawnBot();
+        if (botsRemain <= 0) {
+            DespawnAllBots();
+            GameManager.Instance.SetGameState(GameState.WIN);
+            Player.Instance.OnWinGame();
+        }
+    }
+
+    public void RemoveFromCurrentBotList(Character bot) {
+        if (currentBotList.Contains(bot)) {
+            currentBotList.Remove(bot);
+        }
+    }
+
+    public void DespawnAllBots() {
+        foreach (Bot bot in currentBotList) {
+            HBPool.Despawn(bot);
+        }
+        currentBotList.Clear();
     }
 
     public Vector3 GetRandomNavMeshPosition() {
@@ -75,22 +116,26 @@ public class LevelManager : MonoBehaviour
         randomDirection += playerStartPoint;
         randomDirection.y = 0;
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, spawnRadius, NavMesh.AllAreas)) {
-            return hit.position;
-        } else { 
-            return GetRandomNavMeshPosition(); 
+        for (int i = 0; i < 3; i++) {
+            if (NavMesh.SamplePosition(randomDirection, out hit, spawnRadius, NavMesh.AllAreas)) {
+                return hit.position;
+            }
         }
+        return Vector3.zero;
     }
 
-    public void RemoveFromCurrentBotsList(Character bot) {
-        currentBotsList.Remove(bot);
+    public Vector3 GetRandomBotSpawnPosition() {
+        float playerSafeRange = 10f;
+        for (int i = 0; i < 10; i++) {
+            Vector3 randomPos = GetRandomNavMeshPosition();
+            if (Vector3.Distance(randomPos, playerStartPoint) > playerSafeRange) {
+                return randomPos;
+            }
+        }
+        return Vector3.zero;
     }
 
-    public void SetCharacterRemain(Character character) {
-        botsCount--;
-    }
-
-    public WeaponConfig GetWeaponByWeaponType(WeaponType weaponPoolType) {
+    public WeaponConfig GetWeaponConfigByType(WeaponType weaponPoolType) {
         //Debug.Log((PoolType)weaponPoolType);
         //Debug.Log(weaponPoolType);
         foreach (WeaponConfig weapon in WeaponConfigList) {
@@ -100,11 +145,46 @@ public class LevelManager : MonoBehaviour
         return null;
     }
 
-    public WeaponConfig GetRandomWeaponType() {
+    public WeaponConfig GetRandomWeaponConfig() {
         System.Random random = new System.Random();
         int index = random.Next(WeaponConfigList.Count);
 
         return WeaponConfigList[index];
     }
+
+    public HatConfig GetHatConfigByType(HatType hatType) {
+        foreach (HatConfig hatConfig in HatConfigList)
+        {
+            if (hatConfig.itemType == (PoolType)hatType) {
+                return hatConfig;
+            }
+        }
+        return null;
+    }
+
+    public HatConfig GetRandomHatConfig() {
+        System.Random random = new System.Random();
+        int index = random.Next(HatConfigList.Count);
+
+        return HatConfigList[index];
+    }
+
+    public PantsConfig GetPantsConfigByType(PantsType pantsType) {
+        foreach (PantsConfig pantConfig in PantsConfigList) {
+            if (pantConfig.itemType == (PoolType)pantsType) {
+                return pantConfig;
+            }
+        }
+        return null;
+    }
+
+    public PantsConfig GetRandomPantsConfig() {
+        System.Random random = new System.Random();
+        int index = random.Next(PantsConfigList.Count);
+
+        return PantsConfigList[index];
+    }
+
+
 
 }

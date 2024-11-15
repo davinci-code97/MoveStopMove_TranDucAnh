@@ -18,6 +18,11 @@ public class Constants : MonoBehaviour
     public const string TAG_PLAYER = "Player";
     public const string TAG_BULLET = "Bullet";
     public const string TAG_OBSTACLE = "Obstacle";
+    public const string TAG_WALL = "Wall";
 
-    
+    public const int CAM_MAINMENU_INDEX = 0;
+    public const int CAM_SHOP_INDEX = 1;
+    public const int CAM_GAMEPLAY_INDEX = 2;
+
+
 }

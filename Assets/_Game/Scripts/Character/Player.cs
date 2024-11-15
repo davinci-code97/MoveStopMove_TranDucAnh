@@ -2,24 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.LightingExplorerTableColumn;
 
 public class Player : Character
 {
     public static Player Instance { get; private set; }
 
+    public event EventHandler OnEnterObstacle;
+    public event EventHandler OnExitObstacle;
+
     [SerializeField] private Joystick joystick;
 
     private Vector2 direction;
 
-    private int killCount = 0;
-
     private void Awake() {
         Instance = this;
-    }
-
-    protected override void Start()
-    {
-        OnInit();
     }
 
     protected override void Update()
@@ -39,40 +36,57 @@ public class Player : Character
     protected override void OnTriggerEnter(Collider other) {
         base.OnTriggerEnter(other);
         if (other.CompareTag(Constants.TAG_OBSTACLE)) {
-            //Debug.Log("Obstacle in range");
-            MeshRenderer obstacleRenderer = other.GetComponentInChildren<MeshRenderer>();
-            Color color = obstacleRenderer.material.color;
-            color.a = 0.5f;
-            obstacleRenderer.material.color = color;
+            OnEnterObstacle?.Invoke(this, EventArgs.Empty);
         }
     }
 
     protected override void OnTriggerExit(Collider other) {
         base.OnTriggerExit(other);
         if (other.CompareTag(Constants.TAG_OBSTACLE)) {
-            //Debug.Log("Obstacle out of range");
-            MeshRenderer obstacleRenderer = other.GetComponentInChildren<MeshRenderer>();
-            Color color = obstacleRenderer.material.color;
-            color.a = 1f;
-            obstacleRenderer.material.color = color;
+            OnExitObstacle?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    protected override void OnInit() {
-        base.OnInit();
+    public override void OnKill(Character victim) {
+        base.OnKill(victim);
+        UIGamePlaying.Instance.UpdatePlayerScore(killCount);
+    }
+
+    // OnDeath
+    protected override void Character_OnCharacterDead(object sender, OnCharacterDeadEventArgs e) {
+        base.Character_OnCharacterDead(sender, e);
+        joystick.gameObject.SetActive(false);
+        joystick.gameObject.SetActive(true);
+        GameManager.Instance.SetGameState(GameState.LOSE);
     }
 
     protected override void SetUpCurrentWeapon() {
-        base.SetUpCurrentWeapon();
+        if (currentWeapon != null) {
+            HBPool.Despawn(currentWeapon);
+        }
         WeaponType weaponPoolType = UserDataManager.Instance.GetCurrentWeaponPoolType();
-        WeaponConfig weaponConfig = LevelManager.Instance.GetWeaponByWeaponType(weaponPoolType);
-        //if (weaponConfig == null) { return; }
-        //Debug.Log(weaponConfig.itemType);
-        Quaternion rotation = Quaternion.Euler(0, -90, 0);
-        weapon = HBPool.Spawn<Weapon>(weaponConfig.itemType, rightHand.position, rotation);
-        weapon.SetWeaponParent(rightHand);
-        weapon.SetOwner(this);
-        weapon.SetAttackRange(attackRange);
+        WeaponConfig weaponConfig = LevelManager.Instance.GetWeaponConfigByType(weaponPoolType);
+        SetUpWeapon(weaponConfig);
+    }
+
+    protected override void SetUpCurrentHat() {
+        if (currentHat != null) {
+            HBPool.Despawn(currentHat);
+        }
+        HatType hatType = UserDataManager.Instance.GetCurrentHatPoolType();
+        if (hatType == HatType.None) return;
+        HatConfig hatConfig = LevelManager.Instance.GetHatConfigByType(hatType);
+        SetUpHat(hatConfig);
+    }
+
+    protected override void SetUpCurrentPants() {
+        PantsType pantsType = UserDataManager.Instance.GetCurrentPantsType();
+        if (pantsType == PantsType.None) {
+            currentPants = pantsMeshRenderder.material = modelMeshRenderder.material;
+            return;
+        }
+        PantsConfig pantsConfig = LevelManager.Instance.GetPantsConfigByType(pantsType);
+        SetUpPants(pantsConfig);
     }
 
     protected override void FindNearestTarget() {
@@ -100,23 +114,30 @@ public class Player : Character
         }
     }
 
-    protected override void Target_OnCharacterDead(object sender, Character target) {
-        base.Target_OnCharacterDead(sender, target);
-        killCount++;
-        //UserDataManager.Instance.IncreasePlayerGold(target.GetCharacterGoldValue());
-    }
-
-    public override void HandleMovement() {
+    protected override void HandleMovement() {
         if (!joystick) return;
         base.HandleMovement();
         direction = joystick.Direction;
         rb.velocity = new Vector3(direction.x * moveSpeed, rb.velocity.y, direction.y * moveSpeed);
     }
 
-    //public override void Attack() { }
-
     public Vector3 GetPlayerPosition() { return TF.position; }
 
-    public void SetPlayerPosition(Vector3 newPosition) => TF.position = newPosition;
+    public void SetPlayerPosition(Vector3 newPosition) {
+        TF.rotation = Quaternion.Euler(0, 180, 0);
+        TF.position = newPosition;
+    }
+
+    public void OnWinGame() {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.constraints = RigidbodyConstraints.FreezePosition;
+        rb.detectCollisions = false;
+        nearestTarget = null;
+        isAttacking = false;
+        ChangeAnim(Constants.ANIM_DANCE);
+
+        UserDataManager.Instance.SetPlayerGold(gold);
+    }
 
 }

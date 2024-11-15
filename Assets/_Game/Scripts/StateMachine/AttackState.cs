@@ -7,7 +7,7 @@ public class AttackState : IState
     private float timer;
     private float randomTime;
     private float minRandomTime = 1f;
-    private float maxRandomTime = 3f;
+    private float maxRandomTime = 2f;
 
     public void OnEnter(Bot bot) {
         timer = 0;
