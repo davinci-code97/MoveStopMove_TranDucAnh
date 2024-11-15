@@ -8,7 +8,8 @@ public class UIPlayerNameTag : MonoBehaviour {
     [SerializeField] private Vector3 offset;
 
     void Update() {
-        transform.position = Camera.main.WorldToScreenPoint(Player.Instance.TF.position + offset);
+        transform.position = Vector3.Lerp(transform.position, 
+            Camera.main.WorldToScreenPoint(Player.Instance.TF.position + offset), Time.deltaTime * 10f);
     }
 
 
