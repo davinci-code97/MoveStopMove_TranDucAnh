@@ -43,26 +43,27 @@ public class Bullet : GameUnit
     }
 
     private void OnCollisionEnter(Collision collision) {
-        CheckCollideWithCharacter(collision);
         CheckCollideWithMap(collision);
+        CheckCollideWithCharacter(collision);
     }
 
-    private void CheckCollideWithCharacter(Collision collision) {
-        if (collision.gameObject.CompareTag(Constants.TAG_OBSTACLE) || collision.gameObject.CompareTag(Constants.TAG_WALL)) {
+    private void CheckCollideWithMap(Collision collision) {
+        GameObject collisionGO = collision.gameObject;
+        if (collisionGO.CompareTag(Constants.TAG_OBSTACLE) || collisionGO.CompareTag(Constants.TAG_WALL)) {
             SoundManager.Instance.PlayHitSFX(TF.position);
             HBPool.Despawn(this);
         }
     }
 
-    private void CheckCollideWithMap(Collision collision) {
-        if (collision.gameObject.CompareTag(Constants.TAG_CHARACTER) && collision.gameObject != owner.gameObject) {
+    private void CheckCollideWithCharacter(Collision collision) {
+        GameObject collisionGO = collision.gameObject;
+        if (collisionGO.CompareTag(Constants.TAG_CHARACTER) && collisionGO != owner.gameObject) {
             Character character = collision.gameObject.GetComponent<Character>();
             character.OnHit(this, damage);
             HBPool.Despawn(this);
         }
     }
 
-    
     public void SetTarget(Character character) {
         target = character;
         direction = target.transform.position - TF.position;

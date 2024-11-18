@@ -100,7 +100,6 @@ public class UserDataManager : MonoBehaviour
             ShopItem<HatType> hat => IsHatPurchased(hat.type),
             ShopItem<PantsType> pant => IsPantPurchased(pant.type),
             //ShopItemData<FullSetType> fullSet => IsFullSetPurchased(fullSet.type),
-            _ => false
         };
        
     }

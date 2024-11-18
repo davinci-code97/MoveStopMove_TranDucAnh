@@ -28,7 +28,7 @@ public class ShopTabsManager : MonoBehaviour
     [SerializeField] private TMP_Text buffDescText;
 
     private UIShopItem currentShopItem;
-    private UIShopItem equipedShopItem;
+    private UIShopItem equippedShopItem;
 
     void Start() {
         SetupShopPages();
@@ -68,7 +68,7 @@ public class ShopTabsManager : MonoBehaviour
             equippedButton.gameObject.SetActive(false);
 
             if (shopItemUI.isEquipped) {
-                equipedShopItem = shopItemUI;
+                equippedShopItem = shopItemUI;
                 equippedButton.gameObject.SetActive(true);
                 equipButton.gameObject.SetActive(false);
                 buyButton.gameObject.SetActive(false);
@@ -94,15 +94,15 @@ public class ShopTabsManager : MonoBehaviour
     }
 
     public void Equip() {
-        if (currentShopItem != equipedShopItem) {
+        if (currentShopItem != equippedShopItem) {
             currentShopItem.EquipShopItem();
-            if (equipedShopItem) {
-                equipedShopItem.UnEquipShopItem();
+            if (equippedShopItem) {
+                equippedShopItem.UnEquipShopItem();
             }
         }
 
         SetupShopItemOptions(currentShopItem);
-        SetupShopItemOptions(equipedShopItem);
+        SetupShopItemOptions(equippedShopItem);
 
         SoundManager.Instance.PlayButtonClickSFX();
     }

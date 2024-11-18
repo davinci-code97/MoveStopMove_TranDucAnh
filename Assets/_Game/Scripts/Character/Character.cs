@@ -191,7 +191,6 @@ public class Character : GameUnit
         RemoveCharacterFromRange(e.character);
     }
 
-
     protected virtual void SetUpCurrentWeapon() {
         if (currentWeapon != null) {
             HBPool.Despawn(currentWeapon);
@@ -225,7 +224,6 @@ public class Character : GameUnit
         currentPants = pantsMeshRenderder.material = pantsConfig.material;
     }
 
-
     void CheckGrowth() {
         int requiredKillsForNextGrowth = baseKillRequirement * (int)Mathf.Pow(2, growthStage);
 
@@ -241,7 +239,6 @@ public class Character : GameUnit
         SoundManager.Instance.PlayGrowSizeSFX(transform.position);
         //Debug.Log("Character grew! Current size: " + transform.localScale);
     }
-
 
     public void ChangeAnim(string animName) {
         if (currentAnimName != animName) {

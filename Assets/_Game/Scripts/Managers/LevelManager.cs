@@ -126,7 +126,7 @@ public class LevelManager : Singleton<LevelManager>
         float playerSafeRange = 10f;
         for (int i = 0; i < 10; i++) {
             Vector3 randomPos = GetRandomNavMeshPosition();
-            if (Vector3.Distance(randomPos, playerStartPoint) > playerSafeRange) {
+            if (Vector3.Distance(randomPos, Player.Instance.GetPlayerPosition()) > playerSafeRange) {
                 return randomPos;
             }
         }
