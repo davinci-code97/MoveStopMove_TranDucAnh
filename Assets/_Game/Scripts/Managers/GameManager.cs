@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
     private bool isGamePaused;
 
     [SerializeField] private Joystick joystick;
+    [SerializeField] private Canvas indicators;
 
     private void Awake() {
         Input.multiTouchEnabled = false;
@@ -66,8 +67,10 @@ public class GameManager : Singleton<GameManager>
 
         if (currentState == GameState.PLAYING) {
             joystick.gameObject.SetActive(true);
+            indicators.gameObject.SetActive(true);
         } else {
-            joystick.gameObject.SetActive(false);
+            //joystick.gameObject.SetActive(false);
+            indicators.gameObject.SetActive(false);
         }
 
         if (currentState == GameState.PAUSED) {

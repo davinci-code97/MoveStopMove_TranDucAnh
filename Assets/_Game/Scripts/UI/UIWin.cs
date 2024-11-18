@@ -23,6 +23,8 @@ public class UIWin : UICanvas
     private void BackToMainMenu() {
         SoundManager.Instance.PlayButtonClickSFX();
         UserDataManager.Instance.SetLevel(UserDataManager.Instance.GetCurrentLevel()+1);
+        LevelManager.Instance.ResetLevel();
+        LevelManager.Instance.OnInit();
         GameManager.Instance.SetGameState(GameState.MAIN_MENU);
     }
 

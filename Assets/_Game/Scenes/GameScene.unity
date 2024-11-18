@@ -1229,6 +1229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 829443356}
+  indicators: {fileID: 1878200572}
 --- !u!1001 &879207801
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -32,7 +32,7 @@ public class LevelManager : Singleton<LevelManager>
         OnInit();
     }
 
-    private void OnInit() {
+    public void OnInit() {
         SetupMap();
         SetupLevel();
         SetupBots();
