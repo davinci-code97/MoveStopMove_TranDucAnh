@@ -1228,8 +1228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab00049fda1456408a015d1f273937d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joystick: {fileID: 829443356}
-  indicators: {fileID: 1878200572}
 --- !u!1001 &879207801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1628,7 +1626,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

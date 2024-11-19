@@ -17,6 +17,14 @@ public class Bot : Character
         if (!IsDead) {
             currentState?.OnExecute(this);
         }
+        if (GameManager.Instance.currentState != GameState.PLAYING) {
+            rb.velocity = Vector3.zero;
+            rb.constraints = RigidbodyConstraints.FreezePosition;
+            indicator.offScreenSpriteHide = true;
+            return;
+        } else {
+            indicator.offScreenSpriteHide = false;
+        }
     }
 
     public override void OnInit() {
@@ -55,7 +63,9 @@ public class Bot : Character
         ResetNavMeshNavigation();
         //StopMoving();
         ChangeState(new DeadState());
-        StartCoroutine(DespawnAfterDelay(2f));
+        if (this.isActiveAndEnabled) {
+            StartCoroutine(DespawnAfterDelay(2f));
+        }
 
         if (GameManager.Instance.currentState == GameState.PLAYING) {
             LevelManager.Instance.SetCharacterRemain();
@@ -114,6 +124,7 @@ public class Bot : Character
     }
 
     public void ResetNavMeshNavigation() {
+        if (!agent.isOnNavMesh) return;
         agent.isStopped = true;
         agent.ResetPath();
     }

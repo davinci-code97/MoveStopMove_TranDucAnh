@@ -111,7 +111,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     public Vector3 GetRandomNavMeshPosition() {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * spawnRadius;
+        Vector3 randomDirection = Random.insideUnitSphere * spawnRadius;
         randomDirection += playerStartPoint;
         randomDirection.y = 0;
         NavMeshHit hit;

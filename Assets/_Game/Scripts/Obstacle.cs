@@ -10,15 +10,14 @@ public class Obstacle : MonoBehaviour
 
     void Start()
     {
-        Player.Instance.OnEnterObstacle += Player_OnEnterObstacle;
-        Player.Instance.OnExitObstacle += Player_OnExitObstacle;
+
     }
 
-    private void Player_OnEnterObstacle(object sender, System.EventArgs e) {
+    public void ChangeTransparentMateral() {
         meshRenderer.material = transparentMat;
     }
 
-    private void Player_OnExitObstacle(object sender, System.EventArgs e) {
+    public void ChangeNormalMateral() {
         meshRenderer.material = normalMat;
     }
 

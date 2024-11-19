@@ -2,13 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.LightingExplorerTableColumn;
 
 public class Player : Character
 {
     public static Player Instance { get; private set; }
-
-    public event EventHandler OnEnterObstacle;
-    public event EventHandler OnExitObstacle;
 
     [SerializeField] private Joystick joystick;
 
@@ -35,14 +33,16 @@ public class Player : Character
     protected override void OnTriggerEnter(Collider other) {
         base.OnTriggerEnter(other);
         if (other.CompareTag(Constants.TAG_OBSTACLE)) {
-            OnEnterObstacle?.Invoke(this, EventArgs.Empty);
+            Obstacle obstacle = other.GetComponent<Obstacle>();
+            obstacle.ChangeTransparentMateral();
         }
     }
 
     protected override void OnTriggerExit(Collider other) {
         base.OnTriggerExit(other);
         if (other.CompareTag(Constants.TAG_OBSTACLE)) {
-            OnExitObstacle?.Invoke(this, EventArgs.Empty);
+            Obstacle obstacle = other.GetComponent<Obstacle>();
+            obstacle.ChangeNormalMateral();
         }
     }
 
@@ -64,6 +64,7 @@ public class Player : Character
             HBPool.Despawn(currentWeapon);
         }
         WeaponType weaponPoolType = UserDataManager.Instance.GetCurrentWeaponPoolType();
+        if (weaponPoolType == WeaponType.None) return;
         WeaponConfig weaponConfig = LevelManager.Instance.GetWeaponConfigByType(weaponPoolType);
         SetUpWeapon(weaponConfig);
     }

@@ -168,7 +168,7 @@ public class Character : GameUnit
     }
 
     protected virtual void OnDespawn() {
-        HBPool.Despawn(this);
+            HBPool.Despawn(this);
     }
 
     protected void AddCharacterToRange(Character enemy) {
