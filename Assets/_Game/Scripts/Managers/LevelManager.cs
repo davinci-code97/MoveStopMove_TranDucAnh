@@ -104,6 +104,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public void DespawnAllBots() {
         foreach (Bot bot in currentBotList) {
+            bot.ChangeState(new DeadState());
             HBPool.Despawn(bot);
         }
         currentBotList.Clear();

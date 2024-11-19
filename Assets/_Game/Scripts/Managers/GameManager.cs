@@ -13,11 +13,6 @@ public class GameManager : Singleton<GameManager>
     //private float gamePlayingTimer;
     //private float gamePlayingTimerMax;
 
-    private bool isGamePaused;
-
-    [SerializeField] private Joystick joystick;
-    [SerializeField] private Canvas indicators;
-
     private void Awake() {
         Input.multiTouchEnabled = false;
         Application.targetFrameRate = 60;
@@ -63,14 +58,6 @@ public class GameManager : Singleton<GameManager>
             case GameState.LOSE:
                 OnGameLose();
                 break;
-        }
-
-        if (currentState == GameState.PLAYING) {
-            joystick.gameObject.SetActive(true);
-            indicators.gameObject.SetActive(true);
-        } else {
-            //joystick.gameObject.SetActive(false);
-            indicators.gameObject.SetActive(false);
         }
 
         if (currentState == GameState.PAUSED) {

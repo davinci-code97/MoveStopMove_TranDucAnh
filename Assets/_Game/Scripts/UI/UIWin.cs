@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UIWin : UICanvas
 {
+    // TODO: OnWinLevel Event
+
     [SerializeField] private Button homeButton; 
     [SerializeField] private TMP_Text playerGoldEarnedText;
 

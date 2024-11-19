@@ -51,8 +51,9 @@ public class Bot : Character
 
     protected override void Character_OnCharacterDead(object sender, OnCharacterDeadEventArgs e) {
         base.Character_OnCharacterDead(sender, e);
-        agent.SetDestination(transform.position);
+        //agent.SetDestination(transform.position);
         ResetNavMeshNavigation();
+        //StopMoving();
         ChangeState(new DeadState());
         StartCoroutine(DespawnAfterDelay(2f));
 
@@ -82,7 +83,7 @@ public class Bot : Character
     public void StopMoving() {
         rb.velocity = Vector3.zero;
         agent.velocity = Vector3.zero;
-        agent.SetDestination(TF.position);
+        //agent.SetDestination(TF.position);
         //ResetNavMeshNavigation();
         ChangeAnim(Constants.ANIM_IDLE);
     }

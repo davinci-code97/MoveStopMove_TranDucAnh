@@ -63,17 +63,16 @@ public class ShopTabsManager : MonoBehaviour
         ShopItem shopItem = shopItemUI.shopItem;
 
         if (shopItemUI.isPurchased) {
-            equipButton.gameObject.SetActive(true);
-            buyButton.gameObject.SetActive(false);
-            equippedButton.gameObject.SetActive(false);
-
             if (shopItemUI.isEquipped) {
                 equippedShopItem = shopItemUI;
                 equippedButton.gameObject.SetActive(true);
                 equipButton.gameObject.SetActive(false);
                 buyButton.gameObject.SetActive(false);
+            } else {
+                equipButton.gameObject.SetActive(true);
+                buyButton.gameObject.SetActive(false);
+                equippedButton.gameObject.SetActive(false);
             }
-
         }
         else {
             equipButton.gameObject.SetActive(false);
@@ -138,6 +137,14 @@ public class ShopTabsManager : MonoBehaviour
     }
 
     public void ActiveTab(int tabNo) {
+        if (currentShopItem != null) {
+            currentShopItem.UnSelectItem();
+            currentShopItem = null;
+            equipButton.gameObject.SetActive(false);
+            equippedButton.gameObject.SetActive(false);
+            buyButton.gameObject.SetActive(false);
+            buffDescText.SetText("");
+        }
         for (int i = 0; i < tabImages.Length; i++) {
             pages[i].gameObject.SetActive(false);
             tabImages[i].color = Color.grey;
