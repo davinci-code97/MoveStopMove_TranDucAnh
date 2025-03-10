@@ -10,7 +10,6 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private LevelConfig currentLevelConfig;
     [SerializeField] private LevelPrefab currentLevelPrefab;
     
-
     public List<WeaponConfig> WeaponConfigList;
     public List<HatConfig> HatConfigList;
     public List<PantsConfig> PantsConfigList;

@@ -8,13 +8,13 @@ public class CameraManager : Singleton<CameraManager>
 
     [SerializeField] private List<CinemachineVirtualCamera> cameraList = new List<CinemachineVirtualCamera>();
 
-    [SerializeField] private CinemachineVirtualCamera ActiveCamera;
+    [SerializeField] private CinemachineVirtualCamera activeCamera;
 
-    public bool IsActiveCamera(CinemachineVirtualCamera cam) => cam == ActiveCamera;
+    public bool IsActiveCamera(CinemachineVirtualCamera cam) => cam == activeCamera;
 
     public void SwitchCamera (CinemachineVirtualCamera newCamera) {
         newCamera.Priority = 10;
-        ActiveCamera = newCamera;
+        activeCamera = newCamera;
 
         foreach (CinemachineVirtualCamera camera in cameraList)
         {
@@ -27,7 +27,7 @@ public class CameraManager : Singleton<CameraManager>
     public void SwitchCamera (int newCameraIndex) {
         CinemachineVirtualCamera newCamera = cameraList[newCameraIndex];
         newCamera.Priority = 10;
-        ActiveCamera = newCamera;
+        activeCamera = newCamera;
 
         foreach (CinemachineVirtualCamera camera in cameraList)
         {

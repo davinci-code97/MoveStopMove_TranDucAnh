@@ -12,7 +12,7 @@ public class UIGamePaused : UICanvas
     [SerializeField] private Button homeButton;
     [SerializeField] private Button continueButton;
 
-    private void Awake() {
+    private void OnEnable() {
         homeButton.onClick.AddListener(() => {
             BackToMainMenu();
         });
@@ -21,13 +21,18 @@ public class UIGamePaused : UICanvas
             ContinuePlaying();
         });
 
+    }
 
+    private void OnDisable() {
+        homeButton.onClick.RemoveAllListeners();
+        continueButton.onClick.RemoveAllListeners();
     }
 
     private void BackToMainMenu() {
         SoundManager.Instance.PlayButtonClickSFX();
         Close(0);
         UIManager.Instance.OpenUI<UIMainMenu>();
+        LevelManager.Instance.ResetLevel();
         GameManager.Instance.SetGameState(GameState.MAIN_MENU);
     }
 

@@ -15,7 +15,7 @@ public class Character : GameUnit
 
     [SerializeField] protected Rigidbody rb;
     [SerializeField] protected Animator animator;
-    protected string currentAnimName;
+    private string currentAnimName;
 
     [SerializeField] protected SphereCollider attackRangeCollider;
     [SerializeField] protected GameObject beingTargetedSprite;
@@ -157,11 +157,6 @@ public class Character : GameUnit
         CheckGrowth();
     }
 
-    protected IEnumerator ResetRB(float delay) {
-        yield return new WaitForSeconds(delay);
-        rb.isKinematic = false;
-    }
-    
     protected IEnumerator DespawnAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         OnDespawn();
@@ -288,7 +283,7 @@ public class Character : GameUnit
 
     public float GetCharacterGoldValue() => gold;
 
-    public void IncreaseCharacterGoldValue(float value) {
+    private void IncreaseCharacterGoldValue(float value) {
         this.gold += value;
     }
 

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameManager;
 
 public enum GameState { INTRO, MAIN_MENU, SHOPPING, PLAYING, PAUSED, WIN, LOSE }
 

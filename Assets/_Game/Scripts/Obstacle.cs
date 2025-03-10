@@ -8,11 +8,6 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private Material normalMat;
     [SerializeField] private Material transparentMat;
 
-    void Start()
-    {
-
-    }
-
     public void ChangeTransparentMateral() {
         meshRenderer.material = transparentMat;
     }

@@ -20,7 +20,6 @@ public class Weapon : GameUnit
         bulletType = config.bulletType;
         buffType = config.buffType;
         buffValue = config.buffValue;
-        //SetOwner(owner);
     }
 
     public void SetWeaponOwner(Character character) {

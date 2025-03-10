@@ -34,7 +34,7 @@ public class Bullet : GameUnit
         TF.Rotate(rotateSpeed * Vector3.up, Space.Self);
         rb.velocity = direction * bulletSpeed;
 
-        // despawn khi qua range
+        // despawn when out of shoot range
         float distance = Vector3.Distance(TF.position, shootPoint);
         if (distance > attackRange)
         {
@@ -59,6 +59,7 @@ public class Bullet : GameUnit
         GameObject collisionGO = collision.gameObject;
         if (collisionGO.CompareTag(Constants.TAG_CHARACTER) && collisionGO != owner.gameObject) {
             Character character = collision.gameObject.GetComponent<Character>();
+            SoundManager.Instance.PlayHitSFX(TF.position);
             character.OnHit(this, damage);
             HBPool.Despawn(this);
         }

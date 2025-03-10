@@ -25,7 +25,7 @@ public class Player : Character
             FindNearestTarget();
         }
 
-        if (rb.velocity.Equals(Vector3.zero) && nearestTarget != null) {
+        if (rb.velocity.Equals(Vector3.zero) && nearestTarget) {
             Attack();
         }
     }
@@ -54,8 +54,6 @@ public class Player : Character
     // OnDeath
     protected override void Character_OnCharacterDead(object sender, OnCharacterDeadEventArgs e) {
         base.Character_OnCharacterDead(sender, e);
-        joystick.gameObject.SetActive(false);
-        joystick.gameObject.SetActive(true);
         GameManager.Instance.SetGameState(GameState.LOSE);
     }
 
@@ -124,7 +122,7 @@ public class Player : Character
     public Vector3 GetPlayerPosition() { return TF.position; }
 
     public void SetPlayerPosition(Vector3 newPosition) {
-        TF.rotation = Quaternion.Euler(0, 180, 0);
+        TF.rotation = Quaternion.Euler(0, 180, 0); //face camera
         TF.position = newPosition;
     }
 
